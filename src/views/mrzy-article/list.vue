@@ -1,33 +1,65 @@
 <template>
   <div class="app-container">
-
-    <el-table v-loading="loading" :data="tableData" style="width: 100%">
-      <el-table-column type="index" width="50" />
-      <el-table-column prop="title" label="文章标题" width="180" />
-      <el-table-column prop="typeText" label="文章类型" width="180" />
-      <el-table-column prop="creatTime" label="创建时间" />
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="普通文章" name="default">
+        <el-table v-loading="loading" :data="tableData" style="width: 100%">
+          <el-table-column type="index" width="50" />
+          <el-table-column prop="title" label="文章标题" width="180" />
+          <el-table-column prop="typeText" label="文章类型" width="180" />
+          <el-table-column prop="creatTime" label="创建时间" />
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+              <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="固有内容" name="normal">
+        <el-table v-loading="loading" :data="otherArticle" style="width: 100%">
+          <el-table-column type="index" width="50" />
+          <el-table-column prop="title" label="文章标题" width="180" />
+          <el-table-column prop="typeText" label="文章类型" width="180" />
+          <el-table-column prop="creatTime" label="创建时间" />
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+              <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 <script>
-import { fetchList, fetchDel } from '@/api/articles'
+import { fetchList, fetchDel, fetchOther } from '@/api/articles'
 export default {
   data() {
     return {
       loading: true,
-      tableData: []
+      tableData: [],
+      activeName: 'default',
+      otherArticle: []
     }
   },
   mounted() {
     this.getList()
+    this.getOtherArticles()
   },
   methods: {
+    // 获取其他类型文章
+    getOtherArticles() {
+      fetchOther().then((res) => {
+        this.otherArticle = res.data
+      }).catch((res) => {
+
+      })
+    },
+    // tab切换
+    handleClick(tab, event) {
+      console.log(tab, event)
+    },
     addDoctor() {
       this.$router.push('./add')
     },

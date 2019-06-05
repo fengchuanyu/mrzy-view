@@ -1,7 +1,7 @@
 <template>
   <div class="components-container">
     <aside>
-      提示：本系统推荐文章中图片使用网络图片可加快编辑速度，操作方法：1、在网上（比如百度）找到想要的图片。2、鼠标右键复制图片地址。3、编辑器中找到图片按钮或者“插入”-“图片”将复制的图片地址粘贴到地址文本框中即可。
+      提示：如果出现无法显示编辑器情况请尝试刷新页面，本系统推荐文章中图片使用网络图片可加快编辑速度，操作方法：1、在网上（比如百度）找到想要的图片。2、鼠标右键复制图片地址。3、编辑器中找到图片按钮或者“插入”-“图片”将复制的图片地址粘贴到地址文本框中即可。
     </aside>
     <!-- 标题 -->
     <div style="margin-bottom: 40px;">
@@ -13,6 +13,8 @@
           <el-option label="医疗" value="yiliao" />
           <el-option label="养生" value="yangsheng" />
           <el-option label="保健" value="baojian" />
+          <el-option label="医院信息" value="yyxx" />
+          <el-option label="病历交流" value="bljl" />
         </el-select>
       </el-form-item>
     </el-form>
@@ -107,6 +109,8 @@ export default {
         case 'yiliao': typeText = '医疗'; break
         case 'yangsheng':typeText = '养生'; break
         case 'baojian':typeText = '保健'; break
+        case 'yyxx':typeText = '医院信息'; break
+        case 'bljl':typeText = '病历交流'; break
         default:typeText = '无'
       }
       const paramObj = {

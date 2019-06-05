@@ -33,7 +33,7 @@
         <div class="components-container">
           <el-upload
             class="avatar-uploader"
-            action="http://localhost:3000/mrzymz/util/upimg"
+            :action="apiUrl+'/util/upimg'"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -54,6 +54,7 @@ import { tempFile } from '@/api/utils'
 export default {
   data() {
     return {
+      apiUrl: process.env.VUE_APP_BASE_API2,
       form: {
         name: '',
         office: [],

@@ -32,6 +32,14 @@ export function fetchUpdate(data) {
   })
 }
 
+export function fetchOther(query) {
+  return request({
+    url: process.env.VUE_APP_BASE_API2 + '/article/other',
+    method: 'get',
+    params: query
+  })
+}
+
 export function fetchGet(data) {
   return request({
     url: process.env.VUE_APP_BASE_API2 + '/article/get',
