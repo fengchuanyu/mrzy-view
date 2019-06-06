@@ -73,7 +73,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: '欢迎页面', icon: 'dashboard', affix: true }
+        meta: { title: '欢迎页面', icon: 'example', affix: true }
       }
     ]
   }
@@ -106,7 +106,7 @@ export const asyncRoutes = [
     name: '医生管理',
     meta: {
       title: '医生',
-      icon: 'zip',
+      icon: 'peoples',
       roles: ['admin', 'doctor']
     },
     children: [
@@ -133,7 +133,7 @@ export const asyncRoutes = [
     name: '用户管理',
     meta: {
       title: '用户管理',
-      icon: 'zip',
+      icon: 'user',
       roles: ['admin']
     },
     children: [
@@ -153,7 +153,7 @@ export const asyncRoutes = [
     name: '科室管理',
     meta: {
       title: '科室管理',
-      icon: 'zip',
+      icon: 'tree',
       roles: ['admin']
     },
     children: [
@@ -173,7 +173,7 @@ export const asyncRoutes = [
     name: '文章管理',
     meta: {
       title: '文章管理',
-      icon: 'zip',
+      icon: 'edit',
       roles: ['admin']
     },
     children: [
@@ -199,7 +199,7 @@ export const asyncRoutes = [
     name: '挂号管理',
     meta: {
       title: '挂号管理',
-      icon: 'zip',
+      icon: 'tab',
       roles: ['admin']
     },
     children: [

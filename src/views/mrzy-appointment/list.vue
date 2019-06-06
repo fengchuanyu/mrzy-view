@@ -1,5 +1,9 @@
 <template>
   <div class="app-container">
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="等待就诊" name="wait" />
+      <el-tab-pane label="已经就诊" name="pass" />
+    </el-tabs>
     <el-table v-loading="loading" :data="tableData" style="width: 100%">
       <el-table-column type="index" fixed />
       <el-table-column prop="office" label="所挂科室" />
@@ -28,14 +32,18 @@ import { fetchAdd } from '@/api/case'
 export default {
   data() {
     return {
+      activeName: 'wait',
       loading: true,
       tableData: []
     }
   },
   mounted() {
-    this.getList()
+    this.getList('wait')
   },
   methods: {
+    handleClick(obj) {
+      this.getList(obj.name)
+    },
     creatCase(index, obj) {
       this.loading = true
       const caseInfo = {
@@ -51,7 +59,6 @@ export default {
         id: obj._id,
         createCase: true
       }
-      console.log(obj._id)
       // 修改当前挂号信息中是否创建病例为真
       fetchUpdate(updateInfo)
         .then((res) => {
@@ -64,7 +71,6 @@ export default {
     },
     // 执行添加病例操作
     doAddCase(info) {
-      console.log(info)
       fetchAdd(info)
         .then(res => {
           this.loading = false
@@ -105,8 +111,15 @@ export default {
           this.$message.error('删除失败！')
         })
     },
-    getList() {
-      fetchList()
+    getList(type) {
+      this.loading = true
+      const thisParams = {
+        order: 'gt'
+      }
+      if (type === 'pass') {
+        thisParams.order = 'let'
+      }
+      fetchList(thisParams)
         .then(res => {
           this.tableData = res.data
           this.loading = false

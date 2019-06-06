@@ -78,6 +78,8 @@ export default {
         case 'yiliao': typeText = '医疗'; break
         case 'yangsheng':typeText = '养生'; break
         case 'baojian':typeText = '保健'; break
+        case 'yyxx':typeText = '医院信息'; break
+        case 'bljl':typeText = '病历交流'; break
         default:typeText = '无'
       }
       const thisParam = {

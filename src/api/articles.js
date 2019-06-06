@@ -48,3 +48,10 @@ export function fetchGet(data) {
   })
 }
 
+export function fetchType(data) {
+  return request({
+    url: process.env.VUE_APP_BASE_API2 + '/article/type',
+    method: 'post',
+    data
+  })
+}
