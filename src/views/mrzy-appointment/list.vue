@@ -24,6 +24,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页器 -->
+    <div class="pagination-bar">
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :page-size="pageInfo.count"
+        :total="pageInfo.total"
+        @current-change="currentChange"
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -34,15 +44,31 @@ export default {
     return {
       activeName: 'wait',
       loading: true,
-      tableData: []
+      tableData: [],
+      pageInfo: {
+        start: 0,
+        count: 10,
+        total: 0,
+        type: 'gt'
+      }
     }
   },
   mounted() {
     this.getList('wait')
   },
   methods: {
+    // 分页事件
+    currentChange(e) {
+      this.loading = true
+      this.pageInfo.start = (e - 1) * this.pageInfo.count
+      this.getList()
+    },
+    // 顶部tab页面切换
     handleClick(obj) {
       this.getList(obj.name)
+      this.pageInfo.type = obj.name
+      this.pageInfo.start = 0
+      this.pageInfo.total = 0
     },
     creatCase(index, obj) {
       this.loading = true
@@ -112,6 +138,7 @@ export default {
         })
     },
     getList(type) {
+      type = type || this.pageInfo.type
       this.loading = true
       const thisParams = {
         order: 'gt'
@@ -119,9 +146,12 @@ export default {
       if (type === 'pass') {
         thisParams.order = 'let'
       }
+      thisParams.start = this.pageInfo.start
+      thisParams.count = this.pageInfo.count
       fetchList(thisParams)
         .then(res => {
-          this.tableData = res.data
+          this.tableData = res.data.data
+          this.pageInfo.total = res.data.total
           this.loading = false
         })
         .catch(res => {
@@ -132,5 +162,9 @@ export default {
 }
 </script>
 <style scoped>
+.pagination-bar{
+  padding:50px 0;
+  text-align: center;
+}
 </style>
 

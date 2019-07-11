@@ -24,6 +24,18 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页器 -->
+    <div class="pagination-bar">
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :page-size="pageInfo.count"
+        :total="pageInfo.total"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        @current-change="currentChange"
+      />
+    </div>
     <!-- 标记医生弹框 -->
     <el-dialog title="标记医生" width="40%" :visible.sync="dialogFormVisible">
       <el-form>
@@ -54,6 +66,11 @@ export default {
       editInfo: {
         id: '',
         type: ''
+      },
+      pageInfo: {
+        start: 0,
+        count: 6,
+        total: 0
       }
     }
   },
@@ -62,6 +79,20 @@ export default {
     this.getDoctor()
   },
   methods: {
+    // //点击上一页
+    // prevClick(e){
+    //   console.log(e)
+    // },
+    // //点击下一页
+    // nextClick(e){
+    //   console.log(e)
+    // },
+    // 点击页码
+    currentChange(e) {
+      this.loading = true
+      this.pageInfo.start = (e - 1) * this.pageInfo.count
+      this.getList()
+    },
     // 标记按钮处理
     handleEdit(index, obj, type) {
       // let thisId = {
@@ -86,7 +117,6 @@ export default {
       const thisInfo = {
         ...this.editInfo
       }
-      console.log(this.editInfo.type, this.selectDoctor)
       const thisType = parseInt(this.editInfo.type)
       if (thisType === 1) {
         thisInfo.doctor = this.selectDoctor
@@ -105,9 +135,10 @@ export default {
         })
     },
     getList() {
-      fetchList()
+      fetchList(this.pageInfo)
         .then(res => {
-          this.tableData = res.data
+          this.tableData = res.data.data
+          this.pageInfo.total = res.data.total
           this.loading = false
         })
         .catch(res => {
@@ -118,4 +149,8 @@ export default {
 }
 </script>
 <style scoped>
+.pagination-bar{
+  padding:50px 0;
+  text-align: center;
+}
 </style>

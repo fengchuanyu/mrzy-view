@@ -18,31 +18,44 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页器 -->
+    <div class="pagination-bar">
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :page-size="pageInfo.count"
+        :total="pageInfo.total"
+        @current-change="currentChange"
+      />
+    </div>
   </div>
 </template>
 <script>
-import { fetchList, fetchDel, fetchOther, fetchType } from '@/api/articles'
+import { fetchList, fetchDel, fetchType } from '@/api/articles'
 export default {
   data() {
     return {
       loading: true,
       tableData: [],
       activeName: 'default',
-      otherArticle: []
+      otherArticle: [],
+      pageInfo: {
+        start: 0,
+        count: 6,
+        total: 0,
+        type: ['yiliao', 'yangsheng', 'baojian']
+      }
     }
   },
   mounted() {
     this.handleClick({ name: 'default' })
-    this.getOtherArticles()
   },
   methods: {
-    // 获取其他类型文章
-    getOtherArticles() {
-      fetchOther()
-        .then(res => {
-          this.otherArticle = res.data
-        })
-        .catch(res => {})
+    // 分页事件
+    currentChange(e) {
+      this.loading = true
+      this.pageInfo.start = (e - 1) * this.pageInfo.count
+      this.getByType(this.pageInfo.type)
     },
     // tab切换
     handleClick(tab) {
@@ -62,6 +75,7 @@ export default {
           types = ['bljl']
           break
       }
+      this.pageInfo.type = types
       this.getByType(types)
     },
     addDoctor() {
@@ -105,11 +119,14 @@ export default {
     getByType(type) {
       this.loading = true
       const thisParams = {
-        types: type
+        types: type,
+        start: this.pageInfo.start,
+        count: this.pageInfo.count
       }
       fetchType(thisParams)
         .then(res => {
-          this.tableData = res.data
+          this.tableData = res.data.response
+          this.pageInfo.total = res.data.total
           this.loading = false
         })
         .catch(res => {
@@ -119,7 +136,7 @@ export default {
     getList() {
       fetchList()
         .then(res => {
-          this.tableData = res.data
+          this.tableData = res.data.response
           this.loading = false
         })
         .catch(res => {
@@ -133,4 +150,8 @@ export default {
 }
 </script>
 <style scoped>
+.pagination-bar{
+  padding:50px 0;
+  text-align: center;
+}
 </style>

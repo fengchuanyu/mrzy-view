@@ -32,20 +32,20 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    },
-    proxy: {
-      // change xxx-api/login => mock/login
-      // detail: https://cli.vuejs.org/config/#devserver-proxy
-      [process.env.VUE_APP_BASE_API]: {
-        target: `http://localhost:${port}/mock`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
-      }
-    },
-    // '/mrzymz': 'http://localhost:3000'
-    after: require('./mock/mock-server.js')
+    }
+    // proxy: {
+    //   // change xxx-api/login => mock/login
+    //   // detail: https://cli.vuejs.org/config/#devserver-proxy
+    //   [process.env.VUE_APP_BASE_API]: {
+    //     target: `http://localhost:${port}/mock`,
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       ['^' + process.env.VUE_APP_BASE_API]: ''
+    //     }
+    //   }
+    // },
+    // // '/mrzymz': 'http://localhost:3000'
+    // after: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
@@ -61,7 +61,8 @@ module.exports = {
     const cdn = {
       // inject tinymce into index.html
       // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
-      js: ['https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js']
+      // js: ['https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js']
+      js: ['https://cdn.bootcss.com/tinymce/4.9.0/tinymce.min.js']
     }
     config.plugin('html')
       .tap(args => {

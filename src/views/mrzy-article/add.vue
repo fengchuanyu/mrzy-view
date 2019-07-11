@@ -90,7 +90,7 @@ export default {
         typeText
       }
       fetchUpdate(thisParam)
-        .then(() => {
+        .then((res) => {
           loading.close()
           this.$router.push('./articlelist')
         })
@@ -121,7 +121,6 @@ export default {
         type: this.type,
         content: this.content
       }
-      console.log(paramObj)
       fetchAdd(paramObj).then((res) => {
         loading.close()
         this.$router.push('./articlelist')

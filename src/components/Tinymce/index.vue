@@ -2,9 +2,9 @@
   <div :class="{fullscreen:fullscreen}" class="tinymce-container" :style="{width:containerWidth}">
     <textarea :id="tinymceId" class="tinymce-textarea" />
     <!-- 图片上传按钮 -->
-    <!-- <div class="editor-custom-btn-container">
+    <div class="editor-custom-btn-container">
       <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -13,13 +13,14 @@
  * docs:
  * https://panjiachen.github.io/vue-element-admin-site/feature/component/rich-editor.html#tinymce
  */
-// import editorImage from './components/EditorImage'
+import editorImage from './components/EditorImage'
 import plugins from './plugins'
 import toolbar from './toolbar'
+import './zh_CN.js'
 
 export default {
   name: 'Tinymce',
-  // components: { editorImage },
+  components: { editorImage },
   props: {
     id: {
       type: String,
@@ -98,7 +99,7 @@ export default {
     initTinymce() {
       const _this = this
       window.tinymce.init({
-        language: 'zh_CN',
+        // language: 'zh_CN',
         selector: `#${this.tinymceId}`,
         height: this.height,
         body_class: 'panel-body ',
@@ -110,6 +111,9 @@ export default {
         powerpaste_word_import: 'clean',
         code_dialog_height: 450,
         code_dialog_width: 1000,
+        relative_urls: false,
+        remove_script_host: false,
+        document_base_url: 'http://www.mrzymz.com/',
         advlist_bullet_styles: 'square',
         advlist_number_styles: 'default',
         imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
@@ -117,6 +121,7 @@ export default {
         link_title: false,
         nonbreaking_force_tab: true, // inserting nonbreaking space &nbsp; need Nonbreaking Space Plugin
         init_instance_callback: editor => {
+          console.log(_this.value)
           if (_this.value) {
             editor.setContent(_this.value)
           }
@@ -184,6 +189,7 @@ export default {
     },
     imageSuccessCBK(arr) {
       const _this = this
+      console.log(arr)
       arr.forEach(v => {
         window.tinymce.get(_this.tinymceId).insertContent(`<img class="wscnph" src="${v.url}" >`)
       })
